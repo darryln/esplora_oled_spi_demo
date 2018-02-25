@@ -1,4 +1,3 @@
-//#include <Arduino.h>
 #include <Esplora.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -6,14 +5,27 @@
 #include "Adafruit_SH1106.h"
 
 // OLED connections
-const int dispDataPin = 10; // MOSI
-const int dispClkPin = 9; // CLK
-const int dispCsPin = 7; // CS
-const int dispDcPin = 0; // DC
-const int dispRstPin = 1; // RES
 
-// Use software SPI
-//Adafruit_SH1106 disp(dispDataPin, dispClkPin, dispDcPin, dispRstPin, dispCsPin);
+// right hand side header:
+// hdr disp   Arduino
+// pin signal pin
+// --- ------ -----
+// 1   5V      
+// 2   n.c.    
+// 3   SCK     9 
+// 4   MOSI    10
+// 5   CS      7
+// 6   n.c.
+// 7   DC      0
+// 8   RES     1
+// 9   n.c.
+// 10  GND
+
+const int dispDataPin = 10; // MOSI
+const int dispClkPin  = 9;  // CLK
+const int dispCsPin   = 7;  // CS
+const int dispDcPin   = 0;  // DC
+const int dispRstPin  = 1;  // RES
 
 // Use hardware SPI
 Adafruit_SH1106 disp(dispDcPin, dispRstPin, dispCsPin);
@@ -32,7 +44,6 @@ Adafruit_SH1106 disp(dispDcPin, dispRstPin, dispCsPin);
 #define ACCEL_ROW    (5*ROW_H)
 #define ACCEL_COL    (0)
 
-
 #if (SH1106_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SH1106.h!");
 #endif
@@ -41,24 +52,17 @@ const int ledPin = 13;
 int ledState = LOW;
 
 
-void setup(void) {
-    // init serial port
-    Serial.begin(9600);
-#if 1
-    // wait for serial port ready before starting
-    while (!Serial)
-        ;
-    Serial.println("serial initialized");
-#endif
+void setup(void) 
+{
     pinMode(ledPin, OUTPUT);
     disp.begin(SH1106_SWITCHCAPVCC);
     disp.clearDisplay();
     disp.setTextColor(WHITE);
     disp.setTextSize(1);
-
 }
 
-void loop(void) {
+void loop(void) 
+{
       disp.clearDisplay();
       joystick();
       slider();
